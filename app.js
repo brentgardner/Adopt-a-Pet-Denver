@@ -13,12 +13,13 @@ var regex = {
   'two': new RegExp(/<font\ class="Title">*([^&]+)/gi), // name 
 };
 
-var name, desc, _id;
+var name, desc, _id, shelter;
 
+var shelter = 'TLSA';
 var _id = undefined;
 var idParams = [];
 
-var endpoint = 'http://www.petharbor.com/petoftheday.asp?shelterlist=%27DNVR%27&imgwid=160&imght=120&imgname=POD&bgcolor=FFFFFF&fgcolor=000000&type=dog&border=0&availableonly=1&SEQ=0&SHOWSTAT=1&fontface=arial&fontsize=2&noclientinfo=0&bigtitle=1&source=results';
+var endpoint = 'http://www.petharbor.com/petoftheday.asp?shelterlist=' + shelter + '&imgwid=160&imght=120&imgname=POD&bgcolor=FFFFFF&fgcolor=000000&type=dog&border=0&availableonly=1&SEQ=0&SHOWSTAT=1&fontface=arial&fontsize=2&noclientinfo=0&bigtitle=1&source=results';
 
 server.use(restify.acceptParser(server.acceptable));
 server.use(restify.queryParser());
@@ -44,7 +45,7 @@ server.get('/', function (req, res, next) {
     var stringRegExp = "[^" + _id + "<BR><BR><\/font>][^<BR><br>]"
     var regexpSix = new RegExp(stringRegExp, "g");
 
-    var endpointTwo = 'http://www.petharbor.com/detail.asp?ID=' + _id + '&LOCATION=DNVR&searchtype=rnd&shelterlist=%27DNVR%27&where=dummy&kiosk=1';
+    var endpointTwo = 'http://www.petharbor.com/detail.asp?ID=' + _id + '&LOCATION=' + shelter + '&searchtype=rnd&shelterlist=%27' + shelter + '%27&where=dummy&kiosk=1';
 
     request(endpointTwo, function (err, req, body) {
       errorHandler(err);
@@ -84,7 +85,7 @@ server.get('/', function (req, res, next) {
       // payload for request
       var animaldata = {
         name: name,
-        pic: "http://www.petharbor.com/get_image.asp?RES=detail&ID=" + _id + "&LOCATION=DNVR",
+        pic: "http://www.petharbor.com/get_image.asp?RES=detail&ID=" + _id + "&LOCATION=" + shelter,
         id: _id,
         desc: desc
       };
